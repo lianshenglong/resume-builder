@@ -1,0 +1,103 @@
+{
+  "version": "1.0.0",
+  "data": {
+    "title": "严钦蓝",
+    "personalInfo": [
+      {
+        "id": "phone",
+        "label": "电话",
+        "value": "181xxxx7244",
+        "icon": "mdi:phone"
+      },
+      {
+        "id": "email",
+        "label": "邮箱",
+        "value": "magicyan418@linux.do",
+        "icon": "mdi:email"
+      },
+      {
+        "id": "github",
+        "label": "GitHub",
+        "value": "https://github.com/magicyan",
+        "icon": "mdi:github"
+      },
+      {
+        "id": "info-1755766171288-jp21bvjrx",
+        "label": "网站",
+        "value": "https://magicyan418.com",
+        "icon": "mdi:web"
+      }
+    ],
+    "avatar": "",
+    "modules": [
+      {
+        "id": "education-1",
+        "title": "教育背景",
+        "subtitle": "四川商务职业学院",
+        "timeRange": "2020.09.01 ~ 2023.06.30",
+        "content": "",
+        "icon": "mdi:school",
+        "order": 1
+      },
+      {
+        "id": "introduction-1",
+        "title": "自我介绍",
+        "content": "（抱拳沉声）我乃大专巅峰，二转前端蛊师，修前端之道已二年半。以视觉为蛊引，代码为杀招，炼组件如炼丹，布状态似结阵。\n（袖中飞出三道流光）吾掌三大仙蛊：一曰样式蛊，可化万般界面皮相；二曰状态蛊，能驭千重数据变化；三曰动效蛊，可令像素生灵起舞。\n（展开蛊阵图卷）这些时日，斩过混沌需求妖兽，解过浏览器蛊毒，更在用户心海种下交互动效之蛊。凡所见之处，必以像素级精度炼之，以视觉驱动叩问前端大道。\n（负手而立）代码如蛊，一念生万象。诸君且看——我这二年半修为，可能入得各位道友法眼？",
+        "icon": "mdi:account-circle",
+        "order": 2,
+        "timeRange": ""
+      },
+      {
+        "id": "work-1",
+        "title": "工作经历",
+        "subtitle": "甲子洞天科技 | 前端蛊师",
+        "timeRange": "（壬寅年冬 - 今）",
+        "content": "镇守宗门核心产品「天机商城蛊阵」，执掌React+TypeScript丹炉。独炼「设计系统蛊池」，饲喂三百余组件供全宗弟子取用，令开发效率暴涨如潮。每逢大版本更新，吾以「可视化拖拽蛊器」降伏产品心魔，需求迭代速提五成",
+        "icon": "mdi:briefcase",
+        "order": 3
+      },
+      {
+        "id": "work-2",
+        "title": "",
+        "subtitle": "万虫谷网络 | 初阶蛊修",
+        "timeRange": "（庚子年春 - 壬寅年秋）",
+        "content": "于遗老项目「混沌ERP蛊窟」中初试锋芒。以Redux蛊阵降伏四处奔流的状态妖兽，更以Webpack化蛊术重炼构建经脉，令冷启动速度由十息缩至三息。期间驯服WebGL蛊虫，炼就3D仓储可视化大阵，得长老赐「破局新锐」蛊号。",
+        "icon": "",
+        "order": 4
+      },
+      {
+        "id": "project-1",
+        "title": "项目经验",
+        "subtitle": "天机商城蛊阵",
+        "timeRange": "主炼蛊师",
+        "content": "炼就「微前端子蛊巢」，贯通五大道统（React/Vue/原生），令三千页面如臂使指。独创「性能监测蛊虫」，实时吐纳首屏加载、交互反馈等十二项指标，核心转化率提升廿五。今此蛊阵日活百万，稳如磐石。",
+        "icon": "mdi:folder-multiple",
+        "order": 6
+      },
+      {
+        "id": "project-2",
+        "title": "",
+        "subtitle": "九幽数据可视化",
+        "timeRange": "蛊阵设计师",
+        "content": "项目描述：DeepInsight 是蚂蚁集团自主研发的自助式 BI 数据洞察分析平台，主要功能包括可视化看板搭建、智能分析、数据产品建站等。\n主要工作：在该项目中主要负责可视化建设以及工程治理\n1. 主导开放能力建设，拉通产品、设计建设 40+ 可视化图形，提升丰富度\n2. 产品体验优化，尤其是对 ECharts 的体验质量进行改进\n3. 主导可视化能力建设：业务标准化图表库建设、促进数据分析能力增强等可视化一体化建设。同时也是 AntV G2、G2Plot、ThemeSet 主要贡献者等开源项目的研发工作，同时服务于数据可视化分析相关业务。负责 AntV G2、G2Plot，ThemeSet 主要贡献者等开源项目的研发工作，同时服务于数据可视化分析相关业务。",
+        "icon": "",
+        "order": 7
+      },
+      {
+        "id": "project-3",
+        "title": "",
+        "subtitle": "移动端秘术阁APP",
+        "timeRange": "独修者",
+        "content": "以React Native为本命蛊，炼就跨平台双生之术。施「手势动效符咒」解「iOS/Android道统之争」，用户触感如抚真蛊。发布七日即登灵 store榜单前百，留存率超同业三成。",
+        "icon": "",
+        "order": 8
+      }
+    ],
+    "createdAt": "2024-01-01T00:00:00.000Z",
+    "updatedAt": "2025-08-21T09:19:35.152Z"
+  },
+  "metadata": {
+    "exportedAt": "2025-08-21T09:19:35.152Z",
+    "appVersion": "1.0.0"
+  }
+}
