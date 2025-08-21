@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
 import type { ResumeData } from "@/types/resume"
@@ -19,7 +19,7 @@ const DynamicPDFDownloadLink = dynamic(
   { ssr: false }
 )
 
-export default function PDFPreviewPage() {
+function PDFPreviewContent() {
   const searchParams = useSearchParams()
   const [resumeData, setResumeData] = useState<ResumeData | null>(null)
   
@@ -68,5 +68,17 @@ export default function PDFPreviewPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function PDFPreviewPage() {
+  return (
+    <Suspense fallback={
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <p className="text-lg mb-4">加载中...</p>
+      </div>
+    }>
+      <PDFPreviewContent />
+    </Suspense>
   )
 }
