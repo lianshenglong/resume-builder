@@ -109,6 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "bold",
     borderBottomWidth: 1,
+    width: "100%",
     borderBottomColor: "#ddd",
     paddingBottom: 5,
     marginBottom: 8,
