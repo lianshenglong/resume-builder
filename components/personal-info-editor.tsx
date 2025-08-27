@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -33,12 +33,17 @@ export default function PersonalInfoEditor({
   const [avatarUrl, setAvatarUrl] = useState(avatar || "");
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    if (!avatar) return;
+    setAvatarUrl(avatar);
+  }, [avatar]);
+
   /**
    * 处理文件上传
    */
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file && file.type.startsWith('image/')) {
+    if (file && file.type.startsWith("image/")) {
       const reader = new FileReader();
       reader.onload = (e) => {
         const base64 = e.target?.result as string;
@@ -110,7 +115,7 @@ export default function PersonalInfoEditor({
           <Label className="form-label">头像</Label>
           <div className="flex items-center gap-4">
             <div
-              className="w-16 h-16 rounded-full border-2 border-dashed border-border flex items-center justify-center overflow-hidden"
+              className="w-16 h-16 rounded-full border-2 border-dashed border-border flex items-center justify-center overflow-hidden hover:cursor-pointer hover:border-primary"
               onClick={() => fileInputRef.current?.click()}
             >
               {avatarUrl ? (
@@ -130,8 +135,8 @@ export default function PersonalInfoEditor({
               <Input
                 value={avatarUrl}
                 onChange={(e) => handleAvatarChange(e.target.value)}
-                placeholder="请输入头像图片URL"
-                className="mb-2"
+                placeholder="请输入头像图片URL或点击头像上传"
+                className="mb-2 placeholder:text-gray-400 border border-border"
               />
               <p className="text-xs text-gray-400 pl-3">
                 建议使用1:1比例的图片
@@ -167,7 +172,7 @@ export default function PersonalInfoEditor({
         type="file"
         accept="image/*"
         onChange={handleFileUpload}
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
       />
     </Card>
   );
