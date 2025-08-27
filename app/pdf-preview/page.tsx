@@ -1,7 +1,6 @@
 "use client"
 
 import { useEffect, useState, Suspense } from "react"
-import { useSearchParams } from "next/navigation"
 import dynamic from "next/dynamic"
 import type { ResumeData } from "@/types/resume"
 import { Button } from "@/components/ui/button"
@@ -20,20 +19,37 @@ const DynamicPDFDownloadLink = dynamic(
 )
 
 function PDFPreviewContent() {
-  const searchParams = useSearchParams()
   const [resumeData, setResumeData] = useState<ResumeData | null>(null)
-  
+
   useEffect(() => {
-    const resumeDataParam = searchParams.get("data")
-    if (resumeDataParam) {
+    // 先检查 sessionStorage 是否有数据
+    const storedData = sessionStorage.getItem('resumeData');
+    if (storedData) {
       try {
-        const decodedData = JSON.parse(decodeURIComponent(resumeDataParam))
-        setResumeData(decodedData)
+        setResumeData(JSON.parse(storedData));
       } catch (error) {
-        console.error("Failed to parse resume data:", error)
+        console.error("Failed to parse stored resume data:", error);
       }
     }
-  }, [searchParams])
+
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === 'resumeData') {
+        setResumeData(event.data.data);
+        sessionStorage.setItem('resumeData', JSON.stringify(event.data.data));
+      }
+    };
+
+    window.addEventListener('message', handleMessage);
+
+    // 发送 ready 消息到父窗口
+    if (window.opener) {
+      window.opener.postMessage({ type: 'ready' }, '*');
+    }
+
+    return () => {
+      window.removeEventListener('message', handleMessage);
+    };
+  }, [])
 
   if (!resumeData) {
     return (

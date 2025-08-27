@@ -244,12 +244,6 @@ export default function ResumeBuilder() {
 
           <PDFExportButton 
             resumeData={editorState.resumeData} 
-            variant="outline" 
-            size="sm" 
-          />
-
-          <PDFExportButton 
-            resumeData={editorState.resumeData} 
             size="sm" 
           />
         </div>

@@ -1,58 +1,90 @@
-"use client"
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { Icon } from "@iconify/react"
-import type { PersonalInfoItem } from "@/types/resume"
-import { createNewPersonalInfoItem } from "@/lib/resume-utils"
-import IconPicker from "./icon-picker"
+"use client";
+import { useState, useRef } from "react";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Icon } from "@iconify/react";
+import type { PersonalInfoItem } from "@/types/resume";
+import { createNewPersonalInfoItem } from "@/lib/resume-utils";
+import IconPicker from "./icon-picker";
 
 interface PersonalInfoEditorProps {
-  personalInfo: PersonalInfoItem[]
-  avatar?: string
-  onUpdate: (personalInfo: PersonalInfoItem[], avatar?: string) => void
+  personalInfo: PersonalInfoItem[];
+  avatar?: string;
+  onUpdate: (personalInfo: PersonalInfoItem[], avatar?: string) => void;
 }
 
 /**
  * 个人信息编辑器组件
  */
-export default function PersonalInfoEditor({ personalInfo, avatar, onUpdate }: PersonalInfoEditorProps) {
-  const [avatarUrl, setAvatarUrl] = useState(avatar || "")
+export default function PersonalInfoEditor({
+  personalInfo,
+  avatar,
+  onUpdate,
+}: PersonalInfoEditorProps) {
+  const [avatarUrl, setAvatarUrl] = useState(avatar || "");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  /**
+   * 处理文件上传
+   */
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const base64 = e.target?.result as string;
+        setAvatarUrl(base64);
+        onUpdate(personalInfo, base64);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   /**
    * 更新个人信息项
    */
-  const updatePersonalInfoItem = (id: string, updates: Partial<PersonalInfoItem>) => {
-    const updatedInfo = personalInfo.map((item) => (item.id === id ? { ...item, ...updates } : item))
-    onUpdate(updatedInfo, avatarUrl)
-  }
+  const updatePersonalInfoItem = (
+    id: string,
+    updates: Partial<PersonalInfoItem>
+  ) => {
+    const updatedInfo = personalInfo.map((item) =>
+      item.id === id ? { ...item, ...updates } : item
+    );
+    onUpdate(updatedInfo, avatarUrl);
+  };
 
   /**
    * 添加新的个人信息项
    */
   const addPersonalInfoItem = () => {
-    const newItem = createNewPersonalInfoItem()
-    onUpdate([...personalInfo, newItem], avatarUrl)
-  }
+    const newItem = createNewPersonalInfoItem();
+    onUpdate([...personalInfo, newItem], avatarUrl);
+  };
 
   /**
    * 删除个人信息项
    */
   const removePersonalInfoItem = (id: string) => {
-    const updatedInfo = personalInfo.filter((item) => item.id !== id)
-    onUpdate(updatedInfo, avatarUrl)
-  }
+    const updatedInfo = personalInfo.filter((item) => item.id !== id);
+    onUpdate(updatedInfo, avatarUrl);
+  };
 
   /**
    * 处理头像URL变化
    */
   const handleAvatarChange = (url: string) => {
-    setAvatarUrl(url)
-    onUpdate(personalInfo, url)
-  }
+    setAvatarUrl(url);
+    onUpdate(personalInfo, url);
+  };
 
   return (
     <Card className="section-card">
@@ -61,7 +93,12 @@ export default function PersonalInfoEditor({ personalInfo, avatar, onUpdate }: P
           <Icon icon="mdi:account-circle" className="w-5 h-5 text-primary" />
           <h2 className="section-title">个人信息</h2>
         </div>
-        <Button size="sm" variant="outline" onClick={addPersonalInfoItem} className="gap-2 bg-transparent">
+        <Button
+          size="sm"
+          variant="outline"
+          onClick={addPersonalInfoItem}
+          className="gap-2 bg-transparent"
+        >
           <Icon icon="mdi:plus" className="w-4 h-4" />
           添加信息
         </Button>
@@ -72,11 +109,21 @@ export default function PersonalInfoEditor({ personalInfo, avatar, onUpdate }: P
         <div className="form-group">
           <Label className="form-label">头像</Label>
           <div className="flex items-center gap-4">
-            <div className="w-16 h-16 rounded-full border-2 border-dashed border-border flex items-center justify-center overflow-hidden">
+            <div
+              className="w-16 h-16 rounded-full border-2 border-dashed border-border flex items-center justify-center overflow-hidden"
+              onClick={() => fileInputRef.current?.click()}
+            >
               {avatarUrl ? (
-                <img src={avatarUrl} alt="头像预览" className="w-full h-full object-cover" />
+                <img
+                  src={avatarUrl}
+                  alt="头像预览"
+                  className="w-full h-full object-cover"
+                />
               ) : (
-                <Icon icon="mdi:account" className="w-8 h-8 text-muted-foreground" />
+                <Icon
+                  icon="mdi:account"
+                  className="w-8 h-8 text-muted-foreground"
+                />
               )}
             </div>
             <div className="flex-1">
@@ -86,7 +133,9 @@ export default function PersonalInfoEditor({ personalInfo, avatar, onUpdate }: P
                 placeholder="请输入头像图片URL"
                 className="mb-2"
               />
-              <p className="text-xs text-muted-foreground">支持网络图片链接，建议使用1:1比例的图片</p>
+              <p className="text-xs text-gray-400 pl-3">
+                建议使用1:1比例的图片
+              </p>
             </div>
           </div>
         </div>
@@ -105,31 +154,49 @@ export default function PersonalInfoEditor({ personalInfo, avatar, onUpdate }: P
 
         {personalInfo.length === 0 && (
           <div className="text-center py-8 text-muted-foreground">
-            <Icon icon="mdi:information-outline" className="w-8 h-8 mx-auto mb-2 opacity-50" />
+            <Icon
+              icon="mdi:information-outline"
+              className="w-8 h-8 mx-auto mb-2 opacity-50"
+            />
             <p className="text-sm">暂无个人信息，点击"添加信息"开始编辑</p>
           </div>
         )}
       </div>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+      />
     </Card>
-  )
+  );
 }
 
 /**
  * 个人信息项编辑器
  */
 interface PersonalInfoItemEditorProps {
-  item: PersonalInfoItem
-  onUpdate: (updates: Partial<PersonalInfoItem>) => void
-  onRemove: () => void
+  item: PersonalInfoItem;
+  onUpdate: (updates: Partial<PersonalInfoItem>) => void;
+  onRemove: () => void;
 }
 
-function PersonalInfoItemEditor({ item, onUpdate, onRemove }: PersonalInfoItemEditorProps) {
+function PersonalInfoItemEditor({
+  item,
+  onUpdate,
+  onRemove,
+}: PersonalInfoItemEditorProps) {
   return (
     <div className="flex items-start gap-3 p-3 border rounded-lg bg-muted/30">
       {/* 图标选择 */}
       <Dialog>
         <DialogTrigger asChild>
-          <Button variant="outline" size="sm" className="icon-button bg-transparent">
+          <Button
+            variant="outline"
+            size="sm"
+            className="icon-button bg-transparent"
+          >
             <Icon icon={item.icon || "mdi:help-circle"} className="w-4 h-4" />
           </Button>
         </DialogTrigger>
@@ -137,7 +204,10 @@ function PersonalInfoItemEditor({ item, onUpdate, onRemove }: PersonalInfoItemEd
           <DialogHeader>
             <DialogTitle>选择图标</DialogTitle>
           </DialogHeader>
-          <IconPicker selectedIcon={item.icon} onSelect={(icon) => onUpdate({ icon })} />
+          <IconPicker
+            selectedIcon={item.icon}
+            onSelect={(icon) => onUpdate({ icon })}
+          />
         </DialogContent>
       </Dialog>
 
@@ -173,5 +243,5 @@ function PersonalInfoItemEditor({ item, onUpdate, onRemove }: PersonalInfoItemEd
         <Icon icon="mdi:delete" className="w-4 h-4" />
       </Button>
     </div>
-  )
+  );
 }
