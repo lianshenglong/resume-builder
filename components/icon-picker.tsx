@@ -164,7 +164,6 @@ export default function IconPicker({ selectedIcon, onSelect }: IconPickerProps) 
               size="sm"
               onClick={() => {
                 getIconSvgPath(icon).then(svgPath => {
-                  console.log(icon, "icon",svgPath);
                   onSelect(svgPath || "");
                 });
               }}
