@@ -64,7 +64,7 @@ function PDFPreviewContent() {
   return (
     <div className="flex flex-col h-screen overflow-hidden">
       <div className="flex justify-between items-center p-4 border-b">
-        <h1 className="text-2xl font-bold">PDF预览</h1>
+        <h1 className="text-xl font-bold">PDF预览</h1>
         <div className="flex gap-2">
           <Button onClick={() => window.close()} variant="outline" size="sm" className="gap-2">
             <Icon icon="mdi:close" className="w-4 h-4" />

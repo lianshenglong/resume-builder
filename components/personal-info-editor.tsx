@@ -202,7 +202,14 @@ function PersonalInfoItemEditor({
             size="sm"
             className="icon-button bg-transparent"
           >
-            <Icon icon={item.icon || "mdi:help-circle"} className="w-4 h-4" />
+            {item.icon && (
+              <svg
+                width={24}
+                height={24}
+                viewBox="0 0 24 24"
+                dangerouslySetInnerHTML={{ __html: item.icon }}
+              />
+            )}
           </Button>
         </DialogTrigger>
         <DialogContent>

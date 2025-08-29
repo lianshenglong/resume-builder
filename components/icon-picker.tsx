@@ -162,7 +162,12 @@ export default function IconPicker({ selectedIcon, onSelect }: IconPickerProps) 
               key={icon}
               variant={selectedIcon === icon ? "default" : "outline"}
               size="sm"
-              onClick={() => onSelect(icon)}
+              onClick={() => {
+                getIconSvgPath(icon).then(svgPath => {
+                  console.log(icon, "icon",svgPath);
+                  onSelect(svgPath || "");
+                });
+              }}
               className="h-12 w-12 p-0 flex flex-col items-center justify-center gap-1"
               title={label}
             >

@@ -165,7 +165,7 @@ function ModuleItemEditor({
           <div className="flex items-center justify-between p-3 cursor-pointer hover:bg-muted/50 transition-colors">
             <div className="flex items-center gap-3">
               {module.icon ? (
-                <Icon icon={module.icon} className="w-4 h-4 text-primary" />
+                <svg width={16} height={16} viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: module.icon }} />
               ) : (
                 <div className="w-4 h-4 border border-dashed border-gray-400 rounded-sm" />
               )}
@@ -233,7 +233,7 @@ function ModuleItemEditor({
                   <DialogTrigger asChild>
                     <Button variant="outline" className="w-full justify-start gap-2 bg-transparent">
                       {module.icon ? (
-                        <Icon icon={module.icon} className="w-4 h-4" />
+                        <svg width={16} height={16} viewBox="0 0 24 24" dangerouslySetInnerHTML={{ __html: module.icon }} />
                       ) : (
                         <div className="w-4 h-4 border border-dashed border-gray-400 rounded-sm flex items-center justify-center">
                           <span className="text-[8px] text-gray-400">无</span>

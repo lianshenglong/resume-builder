@@ -1,10 +1,10 @@
-"use client"
+"use client";
 
-import { Icon } from "@iconify/react"
-import type { ResumeData } from "@/types/resume"
+import { Icon } from "@iconify/react";
+import type { ResumeData } from "@/types/resume";
 
 interface ResumePreviewProps {
-  resumeData: ResumeData
+  resumeData: ResumeData;
 }
 
 /**
@@ -16,15 +16,34 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
       {/* 头部信息 */}
       <div className="flex items-start justify-between mb-6">
         <div className="flex-1">
-          <h1 className="resume-title text-2xl font-bold text-foreground mb-4">{resumeData.title || "简历标题"}</h1>
+          <h1 className="resume-title text-2xl font-bold text-foreground mb-4">
+            {resumeData.title || "简历标题"}
+          </h1>
 
           {/* 个人信息 */}
           <div className="personal-info grid grid-cols-2 gap-x-6 gap-y-2">
             {resumeData.personalInfo.map((item) => (
-              <div key={item.id} className="personal-info-item flex items-center gap-2">
-                {item.icon && <Icon icon={item.icon} className="resume-icon w-4 h-4 text-primary flex-shrink-0" />}
-                <span className="text-sm text-muted-foreground">{item.label}:</span>
-                <span className="text-sm text-foreground">{item.value || "未填写"}</span>
+              <div
+                key={item.id}
+                className="personal-info-item flex items-center gap-2"
+              >
+                {item.icon && (
+                  <svg
+                    className="resume-icon w-4 h-4
+                     flex-shrink-0 transform -translate-y-[-1px]"
+                    fill="black"
+                    width={16}
+                    height={16}
+                    viewBox="0 0 24 24"
+                    dangerouslySetInnerHTML={{ __html: item.icon }}
+                  />
+                )}
+                <span className="text-sm text-muted-foreground">
+                  {item.label}:
+                </span>
+                <span className="text-sm text-foreground">
+                  {item.value || "未填写"}
+                </span>
               </div>
             ))}
           </div>
@@ -49,7 +68,14 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
           .map((module) => (
             <div key={module.id} className="resume-module">
               <div className="module-title text-lg font-semibold text-foreground border-b border-border pb-2 mb-3 flex items-center gap-2">
-                {module.icon && <Icon icon={module.icon} className="resume-icon w-5 h-5 text-primary" />}
+                {module.icon && (
+                  <svg
+                    width={20}
+                    height={20}
+                    viewBox="0 0 24 24"
+                    dangerouslySetInnerHTML={{ __html: module.icon }}
+                  />
+                )}
                 {module.title}
               </div>
 
@@ -57,9 +83,15 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
                 {/* 副标题和时间 */}
                 {(module.subtitle || module.timeRange) && (
                   <div className="flex items-center justify-between">
-                    {module.subtitle && <h3 className="font-medium text-foreground">{module.subtitle}</h3>}
+                    {module.subtitle && (
+                      <h3 className="font-medium text-foreground">
+                        {module.subtitle}
+                      </h3>
+                    )}
                     {module.timeRange && (
-                      <span className="text-sm text-muted-foreground time-range">{module.timeRange}</span>
+                      <span className="text-sm text-muted-foreground time-range">
+                        {module.timeRange}
+                      </span>
                     )}
                   </div>
                 )}
@@ -78,10 +110,13 @@ export default function ResumePreview({ resumeData }: ResumePreviewProps) {
       {/* 空状态提示 */}
       {resumeData.modules.length === 0 && (
         <div className="text-center py-12 text-muted-foreground no-print">
-          <Icon icon="mdi:file-document-outline" className="w-12 h-12 mx-auto mb-4 opacity-50" />
+          <Icon
+            icon="mdi:file-document-outline"
+            className="w-12 h-12 mx-auto mb-4 opacity-50"
+          />
           <p>暂无简历内容，请在左侧编辑区域添加模块</p>
         </div>
       )}
     </div>
-  )
+  );
 }

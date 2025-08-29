@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import React from "react"
+import React from "react";
 import {
   Document,
   Page,
@@ -11,8 +11,10 @@ import {
   PDFDownloadLink as ReactPDFDownloadLink,
   Image,
   Font,
-} from "@react-pdf/renderer"
-import type { ResumeData } from "@/types/resume"
+  Svg,
+  Path,
+} from "@react-pdf/renderer";
+import type { ResumeData } from "@/types/resume";
 
 // 注册字体
 Font.register({
@@ -20,7 +22,7 @@ Font.register({
   src: "/NotoSansSC-Medium.ttf",
   fontStyle: "normal",
   fontWeight: "normal",
-})
+});
 
 // 注册中文字符断字回调，使每个中文字符可以单独换行
 Font.registerHyphenationCallback((word) => {
@@ -29,7 +31,7 @@ Font.registerHyphenationCallback((word) => {
   }
 
   return Array.from(word)
-    .map((char) => [char, ''])
+    .map((char) => [char, ""])
     .reduce((arr, current) => {
       arr.push(...current);
       return arr;
@@ -43,21 +45,21 @@ Font.register({
   src: "/NotoSansSC-Medium.ttf",
   fontStyle: "italic",
   fontWeight: "normal",
-})
+});
 
 Font.register({
   family: "NotoSansSC",
   src: "/NotoSansSC-Medium.ttf",
   fontStyle: "normal",
   fontWeight: "bold",
-})
+});
 
 Font.register({
   family: "NotoSansSC",
   src: "/NotoSansSC-Medium.ttf",
   fontStyle: "italic",
   fontWeight: "bold",
-})
+});
 
 // 创建样式
 const styles = StyleSheet.create({
@@ -108,11 +110,17 @@ const styles = StyleSheet.create({
   moduleTitle: {
     fontSize: 14,
     fontWeight: "bold",
+    // 下边框相关样式移除
+  },
+  moduleTitleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 5,
     borderBottomWidth: 1,
-    width: "100%",
     borderBottomColor: "#ddd",
     paddingBottom: 5,
     marginBottom: 8,
+    width: "100%",
   },
   moduleHeader: {
     flexDirection: "row",
@@ -139,10 +147,27 @@ const styles = StyleSheet.create({
     marginTop: 50,
     color: "#666",
   },
-})
+});
 
-// 简历PDF文档组件
+type IconType = {
+  icon?: string;
+  size?: number;
+  style?: React.CSSProperties;
+};
 
+// 提取path路径 d 属性 并返回svg
+const renderIcon = ({ icon, size, style }: IconType) => {
+  if (!icon) return null;
+  const match = icon.match(/d="([^"]+)"/);
+  if (match && match[1]) {
+    return (
+      <Svg width={size} height={size} viewBox="0 0 24 24" style={style as any}>
+        <Path d={match[1]} fill="black" />
+      </Svg>
+    );
+  }
+  return null;
+};
 // 简历PDF文档组件
 const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
   <Document>
@@ -156,7 +181,11 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
           <View style={styles.personalInfo}>
             {resumeData.personalInfo.map((item) => (
               <View key={item.id} style={styles.personalInfoItem}>
-
+                {renderIcon({
+                  icon: item.icon,
+                  size: 12,
+                  style: { marginRight: 5, marginTop: 1 },
+                })}
                 <Text style={styles.label}>{item.label}:</Text>
                 <Text style={styles.value}>{item.value || "未填写"}</Text>
               </View>
@@ -175,8 +204,8 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
         .sort((a, b) => a.order - b.order)
         .map((module) => (
           <View key={module.id} style={styles.moduleContainer}>
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
-
+            <View style={styles.moduleTitleContainer}>
+              {renderIcon({ icon: module.icon, size: 16 })}
               <Text style={styles.moduleTitle}>{module.title}</Text>
             </View>
 
@@ -184,13 +213,19 @@ const ResumePDF = ({ resumeData }: { resumeData: ResumeData }) => (
               {/* 副标题和时间 */}
               {(module.subtitle || module.timeRange) && (
                 <View style={styles.moduleHeader}>
-                  {module.subtitle && <Text style={styles.subtitle}>{module.subtitle}</Text>}
-                  {module.timeRange && <Text style={styles.timeRange}>{module.timeRange}</Text>}
+                  {module.subtitle && (
+                    <Text style={styles.subtitle}>{module.subtitle}</Text>
+                  )}
+                  {module.timeRange && (
+                    <Text style={styles.timeRange}>{module.timeRange}</Text>
+                  )}
                 </View>
               )}
 
               {/* 内容 */}
-              {module.content && <Text style={styles.content}>{module.content}</Text>}
+              {module.content && (
+                <Text style={styles.content}>{module.content}</Text>
+              )}
             </View>
           </View>
         ))}
@@ -208,7 +243,7 @@ export const PDFViewer = ({ resumeData }: { resumeData: ResumeData }) => (
   <ReactPDFViewer width="100%" height="100%" style={{ border: "none" }}>
     <ResumePDF resumeData={resumeData} />
   </ReactPDFViewer>
-)
+);
 
 // PDF下载链接组件
 export const PDFDownloadLink = ({
@@ -216,13 +251,16 @@ export const PDFDownloadLink = ({
   fileName = "resume.pdf",
   children,
 }: {
-  resumeData: ResumeData
-  fileName?: string
-  children: React.ReactNode
+  resumeData: ResumeData;
+  fileName?: string;
+  children: React.ReactNode;
 }) => (
-  <ReactPDFDownloadLink document={<ResumePDF resumeData={resumeData} />} fileName={fileName}>
+  <ReactPDFDownloadLink
+    document={<ResumePDF resumeData={resumeData} />}
+    fileName={fileName}
+  >
     {({ loading }) => (loading ? "正在生成PDF..." : children)}
   </ReactPDFDownloadLink>
-)
+);
 
-export default ResumePDF
+export default ResumePDF;
